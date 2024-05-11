@@ -1,0 +1,80 @@
+import numpy as np
+
+class Etudiant:
+    def __init__(self, nom, age, note):
+        self.nom = nom
+        self.age = age
+        self.note = note
+
+class GestionEtudiants:
+    def __init__(self):
+        self.etudiants = []
+
+    def ajouter_etudiant(self, nom, age, note):
+        etudiant = Etudiant(nom, age, note)
+        self.etudiants.append(etudiant)
+
+    def afficher_tous_les_etudiants(self):
+        for etudiant in self.etudiants:
+            print(f"Nom: {etudiant.nom}, Age: {etudiant.age}, Note: {etudiant.note}")
+
+    def calculer_moyenne_classe(self):
+        if len(self.etudiants) == 0:
+            print("Aucun étudiant enregistré.")
+            return
+        notes = [etudiant.note for etudiant in self.etudiants]
+        moyenne = np.mean(notes)
+        print(f"Moyenne de classe: {moyenne}")
+
+    def trier_etudiants_par_note(self):
+        self.etudiants.sort(key=lambda x: x.note)
+
+    def rechercher_etudiant(self, nom):
+        for etudiant in self.etudiants:
+            if etudiant.nom == nom:
+                print(f"Étudiant trouvé - Nom: {etudiant.nom}, Age: {etudiant.age}, Note: {etudiant.note}")
+                return
+        print(f"Aucun étudiant trouvé avec le nom '{nom}'.")
+
+    def ajouter_etudiant(self, nom, age, note):
+        if not isinstance(age, int) or not isinstance(note, int):
+            raise ValueError("L'âge et la note doivent être des entiers.")
+        if age < 0 or note < 0 or note > 100:
+            raise ValueError("L'âge doit être positif et la note doit être comprise entre 0 et 100.")
+        etudiant = Etudiant(nom, age, note)
+        self.etudiants.append(etudiant)
+
+if __name__ == "__main__":
+    gestion_etudiants = GestionEtudiants()
+    # Ajout d'étudiants
+    gestion_etudiants.ajouter_etudiant("Alice", 20, 85)
+    gestion_etudiants.ajouter_etudiant("Bob", 21, 75)
+    
+    # Affichage de tous les étudiants
+    print("Liste de tous les étudiants:")
+    gestion_etudiants.afficher_tous_les_etudiants()
+
+    # Calcul de la moyenne de classe
+    print("\nCalcul de la moyenne de classe:")
+    gestion_etudiants.calculer_moyenne_classe()
+
+    # Tri des étudiants par note
+    print("\nListe des étudiants triés par note:")
+    gestion_etudiants.trier_etudiants_par_note()
+    gestion_etudiants.afficher_tous_les_etudiants()
+
+    # Recherche d'un étudiant par nom
+    print("\nRecherche d'un étudiant:")
+    gestion_etudiants.rechercher_etudiant("Alice")
+    gestion_etudiants.rechercher_etudiant("Charlie")  # Test avec un étudiant inexistant
+
+    # Gestion d'exceptions
+    try:
+        gestion_etudiants.ajouter_etudiant("David", -23, 95)  # Test avec un âge négatif
+    except ValueError as e:
+        print(f"Erreur: {e}")
+
+    try:
+        gestion_etudiants.ajouter_etudiant("Eva", 25, 110)  # Test avec une note invalide
+    except ValueError as e:
+        print(f"Erreur: {e}")
